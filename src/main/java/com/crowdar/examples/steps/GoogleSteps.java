@@ -7,6 +7,7 @@ import com.crowdar.examples.pages.GoogleSearchResultPage;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.openqa.selenium.By;
 import org.testng.Assert;
 
 public class GoogleSteps extends PageSteps {
@@ -18,14 +19,15 @@ public class GoogleSteps extends PageSteps {
 
     @When("The client search for word (.*)")
     public void search(String criteria) {
-        Injector._page(GoogleHomePage.class).enterSearchCriteria(criteria);
-        Injector._page(GoogleHomePage.class).clickSearchButton();
+        Injector._page(GoogleHomePage.class).enterSearchCriteria(criteria + "\n");
+        // Injector._page(GoogleHomePage.class).clickSearchButton();
 
     }
 
     @Then("The client verify that results are shown properly")
     public void statVerfication() {
-        Assert.assertTrue(!Injector._page(GoogleSearchResultPage.class).getStats().isEmpty());
+        Injector._page(GoogleSearchResultPage.class).waitAndCheckElementPresent(By.id("resultStats"));
+        Assert.assertTrue(!Injector._page(GoogleSearchResultPage.class).getStats().contains("crowdar - Google Search"));
 
     }
 }
